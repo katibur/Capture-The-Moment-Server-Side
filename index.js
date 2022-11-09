@@ -59,7 +59,7 @@ async function run() {
         // reviews api
         app.get('/reviews', async (req, res) => {
             const query = {};
-            const cursor = await reviewCollection.find(query);
+            const cursor = await reviewCollection.find(query).sort({ time: -1 });
             const review = await cursor.toArray();
             res.send(review);
         });
@@ -73,9 +73,16 @@ async function run() {
         app.get('/reviews/:id', async (req, res) => {
             const id = req.params.id;
             const query = { service: id };
-            const result = reviewCollection.find(query);
+            const result = reviewCollection.find(query).sort({ time: -1 });
             const cursor = await result.toArray();
             res.send(cursor);
+        });
+
+        app.delete('/reviews/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await reviewCollection.deleteOne(query);
+            res.send(result);
         });
     }
     finally {
