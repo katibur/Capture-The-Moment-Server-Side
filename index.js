@@ -32,13 +32,13 @@ async function run() {
         // services api
         app.get('/', async (req, res) => {
             const query = {}
-            const cursor = serviceCollection.find(query);
+            const cursor = serviceCollection.find(query).sort({ time: -1 });
             const services = await cursor.limit(3).toArray();
             res.send(services);
         });
         app.get('/services', async (req, res) => {
             const query = {}
-            const cursor = serviceCollection.find(query);
+            const cursor = serviceCollection.find(query).sort({ time: -1 });
             const services = await cursor.toArray();
             res.send(services);
         });
